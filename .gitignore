@@ -16,7 +16,7 @@ venv/
 # Local application data
 data/forgejo/
 data/runner/
-data/sqlite/
+data/postgres/
 data/network/nodes/
 data/network/staging/
 data/network/backups/
@@ -30,3 +30,6 @@ data/network/reports/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Files
+passwords.md
