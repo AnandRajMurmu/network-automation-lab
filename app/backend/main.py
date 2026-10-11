@@ -4,6 +4,7 @@ app = FastAPI(
     title="Network Automation Lab API",
     description="Backend API for the network automation platform",
     version="0.1.0",
+    root_path="/api",
 )
 
 

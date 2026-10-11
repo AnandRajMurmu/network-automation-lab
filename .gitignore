@@ -32,4 +32,5 @@ data/network/reports/
 Thumbs.db
 
 # Files
-passwords.md
+artifacts/
+modules/
