@@ -1,0 +1,32 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+secrets/
+*.secret
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Local application data
+data/forgejo/
+data/runner/
+data/sqlite/
+data/network/nodes/
+data/network/staging/
+data/network/backups/
+data/network/reports/
+*.db
+*.db-shm
+*.db-wal
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
