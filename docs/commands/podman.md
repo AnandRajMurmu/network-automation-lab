@@ -229,3 +229,10 @@ podman run -d \
   docker.io/library/python:3.12-slim \
   python -c "import time; print('Python backend container ready', flush=True); time.sleep(1000000)"
 ```
+
+### Run Exec Commands
+
+#### Postgress:
+```bash
+podman exec -it nlab-postgres psql -U nlab -d networklab
+```

@@ -9,6 +9,7 @@ echo "Starting FastAPI..."
 podman run -d \
     --name nlab-api \
     --pod nlab-app \
+    --env-file .env \
     localhost/nlab-api:0.1.0
 
 echo "Starting Nginx..."
