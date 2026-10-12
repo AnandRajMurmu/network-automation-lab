@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Network Automation Lab device inventory dashboard">
+    <title>Network Automation Lab</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">N</div>
+                <div>
+                    <h1>Network Lab</h1>
+                    <p>Automation Platform</p>
+                </div>
+            </div>
+
+            <nav class="navigation" aria-label="Main navigation">
+                <a class="nav-link active" href="#dashboard">
+                    <span class="nav-icon">▦</span>
+                    Dashboard
+                </a>
+                <a class="nav-link" href="#inventory">
+                    <span class="nav-icon">◫</span>
+                    Device Inventory
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <span class="status-indicator"></span>
+                <div>
+                    <strong>Local Environment</strong>
+                    <p>Network Lab</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="dashboard">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">NETWORK AUTOMATION / INVENTORY</p>
+                    <h2>Device Dashboard</h2>
+                    <p class="page-description">
+                        Manage and monitor your registered network devices.
+                    </p>
+                </div>
+
+                <div class="api-status" id="api-status" role="status">
+                    <span class="status-indicator"></span>
+                    Checking API...
+                </div>
+            </header>
+
+            <section class="summary-grid" aria-label="Inventory summary">
+                <article class="summary-card">
+                    <p>Total Devices</p>
+                    <strong id="total-devices">—</strong>
+                    <span>Registered inventory records</span>
+                </article>
+
+                <article class="summary-card">
+                    <p>Active Devices</p>
+                    <strong id="active-devices">—</strong>
+                    <span>Devices marked active</span>
+                </article>
+
+                <article class="summary-card">
+                    <p>Inactive Devices</p>
+                    <strong id="inactive-devices">—</strong>
+                    <span>Inactive or maintenance</span>
+                </article>
+            </section>
+
+            <section class="panel" id="inventory">
+                <div class="panel-header">
+                    <div>
+                        <h3>Device Inventory</h3>
+                        <p>Registered routers, switches, and other network nodes.</p>
+                    </div>
+
+                    <div class="panel-actions">
+                        <button class="button button-secondary" id="refresh-button"
+                                type="button">
+                            Refresh
+                        </button>
+                        <button class="button button-primary" id="add-device-button"
+                                type="button">
+                            + Add Device
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Hostname</th>
+                                <th>Management IP</th>
+                                <th>Device Type</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="device-table-body">
+                            <tr>
+                                <td colspan="7" class="table-message">
+                                    Loading device inventory...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="panel-footer">
+                    <span id="inventory-count">Loading inventory...</span>
+                    <span>Source: PostgreSQL inventory API</span>
+                </div>
+            </section>
+
+            <section class="panel form-panel" id="device-form-panel" hidden>
+                <div class="panel-header">
+                    <div>
+                        <h3 id="form-title">Add Network Device</h3>
+                        <p>Enter the device details to register it in the inventory.</p>
+                    </div>
+                    <button class="button button-secondary" id="cancel-button"
+                            type="button">
+                        Cancel
+                    </button>
+                </div>
+
+                <form id="device-form">
+                    <input type="hidden" id="device-id">
+
+                    <div class="form-grid">
+                        <label>
+                            Hostname
+                            <input id="hostname" name="hostname" type="text"
+                                   maxlength="100" required
+                                   pattern="[A-Za-z0-9][A-Za-z0-9._-]*"
+                                   placeholder="e.g. DIST-SW1">
+                        </label>
+
+                        <label>
+                            Management IP
+                            <input id="management-ip" name="management_ip"
+                                   type="text" required
+                                   placeholder="e.g. 192.168.30.11">
+                        </label>
+
+                        <label>
+                            Device Type
+                            <input id="device-type" name="device_type" type="text"
+                                   maxlength="50" required
+                                   placeholder="e.g. switch">
+                        </label>
+
+                        <label>
+                            Location
+                            <input id="location" name="location" type="text"
+                                   maxlength="100" required
+                                   placeholder="e.g. Head Office">
+                        </label>
+
+                        <label>
+                            Status
+                            <select id="device-status" name="status" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="button button-secondary" id="reset-button"
+                                type="reset">
+                            Reset
+                        </button>
+                        <button class="button button-primary" id="save-button"
+                                type="submit">
+                            Save Device
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <div id="notification" class="notification" role="status"
+                 aria-live="polite" hidden></div>
+
+            <footer class="page-footer">
+                <span>Network Automation Lab</span>
+                <span>Development Environment · Module 4</span>
+            </footer>
+        </main>
+    </div>
+
+    <script src="/js/app.js" defer></script>
+</body>
+</html>

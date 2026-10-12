@@ -12,6 +12,6 @@ echo "Building Nginx image..."
 podman build \
     -t localhost/nlab-nginx:0.1.0 \
     -f infra/nginx/Dockerfile \
-    infra/nginx
+    .
 
 echo "Both images built successfully."
