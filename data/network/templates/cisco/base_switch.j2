@@ -1,0 +1,15 @@
+!
+! Base Cisco Switch Configuration
+!
+hostname {{ hostname }}
+!
+no ip domain-lookup
+ip domain-name {{ domain_name }}
+!
+interface Vlan{{ management_vlan }}
+ description Management Interface
+ ip address {{ management_ip }} {{ subnet_mask }}
+ no shutdown
+!
+ip default-gateway {{ default_gateway }}
+!

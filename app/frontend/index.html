@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Network Automation Lab device inventory dashboard">
     <title>Network Automation Lab</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <div class="app-layout">
@@ -26,6 +26,11 @@
                 <a class="nav-link" href="#inventory">
                     <span class="nav-icon">◫</span>
                     Device Inventory
+                </a>
+
+                <a class="nav-link" href="#configuration">
+                    <span class="nav-icon">⌘</span>
+                    Configuration Generator
                 </a>
             </nav>
 
@@ -190,6 +195,90 @@
                 </form>
             </section>
 
+            <section class="panel" id="configuration">
+                <div class="panel-header">
+                    <div>
+                        <h3>Configuration Generator</h3>
+                        <p>Generate a Cisco switch configuration from a Jinja2 template.</p>
+                    </div>
+                </div>
+
+                <form id="configuration-form">
+                    <div class="form-grid">
+                        <label>
+                            Template
+                            <select id="config-template" required>
+                                <option value="cisco/base_switch.j2">
+                                    Cisco Base Switch
+                                </option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Hostname
+                            <input id="config-hostname" type="text"
+                                   value="DIST-SW1" maxlength="100" required
+                                   pattern="[A-Za-z0-9][A-Za-z0-9._-]*">
+                        </label>
+
+                        <label>
+                            Domain Name
+                            <input id="config-domain" type="text"
+                                   value="lab.local" required>
+                        </label>
+
+                        <label>
+                            Management VLAN
+                            <input id="config-vlan" type="number"
+                                   value="30" min="1" max="4094" required>
+                        </label>
+
+                        <label>
+                            Management IP
+                            <input id="config-ip" type="text"
+                                   value="192.168.30.11" required>
+                        </label>
+
+                        <label>
+                            Subnet Mask
+                            <input id="config-mask" type="text"
+                                   value="255.255.255.0" required>
+                        </label>
+
+                        <label>
+                            Default Gateway
+                            <input id="config-gateway" type="text"
+                                   value="192.168.30.254" required>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="button button-secondary" type="reset">
+                            Reset
+                        </button>
+                        <button class="button button-primary" id="generate-config-button"
+                                type="submit">
+                            Generate Configuration
+                        </button>
+                    </div>
+                </form>
+
+                <div id="configuration-result" class="configuration-result" hidden>
+                    <div class="configuration-result-header">
+                        <div>
+                            <h4>Configuration Preview</h4>
+                            <p>Generated output; not deployed to a device.</p>
+                        </div>
+                        <button class="button button-secondary" id="copy-config-button"
+                                type="button">
+                            Copy Configuration
+                        </button>
+                    </div>
+
+                    <pre id="configuration-output" class="configuration-output"></pre>
+                </div>
+            </section>
+
             <div id="notification" class="notification" role="status"
                  aria-live="polite" hidden></div>
 
@@ -200,6 +289,6 @@
         </main>
     </div>
 
-    <script src="/js/app.js" defer></script>
+    <script src="./js/app.js" defer></script>
 </body>
 </html>

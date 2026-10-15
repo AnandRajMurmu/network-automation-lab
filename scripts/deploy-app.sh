@@ -10,6 +10,8 @@ podman run -d \
     --name nlab-api \
     --pod nlab-app \
     --env-file .env \
+    -e TEMPLATE_DIR=/data/network/templates \
+    -v "$PWD/data/network/templates:/data/network/templates:ro" \
     localhost/nlab-api:0.1.0
 
 echo "Starting Nginx..."

@@ -25,6 +25,18 @@ const elements = {
     cancelButton: document.getElementById("cancel-button"),
     resetButton: document.getElementById("reset-button"),
     notification: document.getElementById("notification"),
+    configurationForm: document.getElementById("configuration-form"),
+    configTemplate: document.getElementById("config-template"),
+    configHostname: document.getElementById("config-hostname"),
+    configDomain: document.getElementById("config-domain"),
+    configVlan: document.getElementById("config-vlan"),
+    configIp: document.getElementById("config-ip"),
+    configMask: document.getElementById("config-mask"),
+    configGateway: document.getElementById("config-gateway"),
+    generateConfigButton: document.getElementById("generate-config-button"),
+    configurationResult: document.getElementById("configuration-result"),
+    configurationOutput: document.getElementById("configuration-output"),
+    copyConfigButton: document.getElementById("copy-config-button"),
 };
 
 let devices = [];
@@ -364,6 +376,83 @@ async function deleteDevice(device) {
         showNotification(error.message, "error");
     }
 }
+
+async function generateConfiguration(event) {
+    event.preventDefault();
+
+    if (!elements.configurationForm.reportValidity()) {
+        return;
+    }
+
+    const variables = {
+        hostname: elements.configHostname.value.trim(),
+        domain_name: elements.configDomain.value.trim(),
+        management_vlan: Number(elements.configVlan.value),
+        management_ip: elements.configIp.value.trim(),
+        subnet_mask: elements.configMask.value.trim(),
+        default_gateway: elements.configGateway.value.trim(),
+    };
+
+    elements.generateConfigButton.disabled = true;
+    elements.generateConfigButton.textContent = "Generating...";
+
+    try {
+        const result = await apiRequest(`${API_BASE}/templates/render`, {
+            method: "POST",
+            body: JSON.stringify({
+                template_name: elements.configTemplate.value,
+                variables,
+            }),
+        });
+
+        elements.configurationOutput.textContent = result.configuration;
+        elements.configurationResult.hidden = false;
+        elements.configurationResult.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
+
+        showNotification("Configuration generated successfully.");
+    } catch (error) {
+        console.error("Configuration generation failed:", error);
+        showNotification(error.message, "error");
+    } finally {
+        elements.generateConfigButton.disabled = false;
+        elements.generateConfigButton.textContent = "Generate Configuration";
+    }
+}
+
+async function copyConfiguration() {
+    const configuration = elements.configurationOutput.textContent;
+
+    if (!configuration) {
+        showNotification("Generate a configuration first.", "error");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(configuration);
+        showNotification("Configuration copied to clipboard.");
+    } catch (error) {
+        console.error("Clipboard copy failed:", error);
+        showNotification(
+            "Clipboard access failed. Select and copy the preview manually.",
+            "error",
+        );
+    }
+}
+
+elements.configurationForm.addEventListener(
+    "submit",
+    generateConfiguration,
+);
+
+elements.configurationForm.addEventListener("reset", () => {
+    elements.configurationResult.hidden = true;
+    elements.configurationOutput.textContent = "";
+});
+
+elements.copyConfigButton.addEventListener("click", copyConfiguration);
 
 elements.refreshButton.addEventListener("click", loadDevices);
 elements.addButton.addEventListener("click", openCreateForm);

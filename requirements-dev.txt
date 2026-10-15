@@ -1,0 +1,5 @@
+# Include application runtime dependencies
+-r app/backend/requirements.txt
+
+# Development and linting tools
+ruff
